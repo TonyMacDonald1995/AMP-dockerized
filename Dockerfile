@@ -115,10 +115,16 @@ ARG SRCDSDEPS="\
 
 # Needed for games that require Wine and Xvfb
 ARG WINEXVFB="\
+    fonts-wine \
+    libwine \
+    libwine:i386 \
     python3 \
     python3-venv \
     cabextract \
-    winehq-stable \
+    wine \
+    wine32 \
+    wine64 \
+    wine-binfmt \
     winbind \
     xauth \
     xvfb"
@@ -130,9 +136,6 @@ RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; then \
         $AMPDEPS; \
     else \ 
         dpkg --add-architecture i386 && \
-        mkdir -pm 755 /etc/apt/keyrings && \
-        wget -O /etc/apt/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key && \
-        wget -NP /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/debian/dists/bookworm/winehq-bookworm.sources && \
         apt-get update && \
         apt-get install -y \
         $AMPDEPS \
